@@ -17,29 +17,74 @@ function App() {
 //     )
 // }
 
+useEffect(() => {
+  localStorage.setItem("todos", JSON.stringify(todos))
+},[todos])
+
+function handleInputChange(e) {
+  setTodo(e.target.value)
+}
+
+function handleFormSubmit (e) {
+  e.preventDefault()
+
+  if( todo !== "" ){
+    setTodos([
+      ...todos,
+      {
+        id: todos.length + 1,
+        text: todo.trim()
+      }
+    ])
+  }
+
+  setTodos("")
+}
+
+function handleAddTodoList () {
+  if( todo !== "" ){
+    const newTodos = [todo]
+    setTodo(newTodos)
+    console.log(newTodos)
+  }
+}
+
   return (
     <>
       <h2>Create A New Todo</h2>
-      <form className="CreateNewTodo">
+      <form className="CreateNewTodo" onSubmit={handleFormSubmit}>
         <input
           name="todo"
           type="text"
           value={todo}
           placeholder="type your todo here"
+          onChange={handleInputChange}
         />
-        {/* <button onClick={}>Add</button> */}
+        
+        <button
+          type="button"
+          onClick={()=>handleAddTodoList(todo)}>
+          Add
+        </button>
       </form>
       
       <h2>My Todo List</h2>
       <ul className="todo-list">
-        {todos.map((todo) =>(
+        {todos.map((todo) => (
           <li key={todo.id}>
             <ul>
-              <li>{todo.text}</li>
-              {/* <li>{todoStatusList}</li> */}
+              <li>{setTodo(todo)}</li>
+              <button
+              type="button"
+            >
+              Edit
+            </button>
+            <button
+              type="button"
+            >
+              Delete
+              </button>
             </ul>
-            <button>Edit</button>
-            <button>Delete</button>
           </li>
         ))}
       </ul>
