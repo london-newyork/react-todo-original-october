@@ -24,8 +24,8 @@ import React,{ useState, useEffect } from 'react'
 // export default App
 
 function App() {
-  const [todos, setTodos] = useState([])
-  const [todo, setTodo] = useState("")
+  const [todos, setTodos] = useState([])//配列がセットされているので、以降はずっと配列が来る
+  const [todo, setTodo] = useState("")//文字列がセットされているので、以降はずっと文字列が来る
   // const [state, dispatch] = useReducer()
 
   // const waiting = "Waiting"
@@ -57,14 +57,16 @@ function handleFormSubmit (e) {
     setTodos([
       ...todos,
       {
-        id: new Date(),
-        // id: todos.length + 1,
+        //new Date()だけだとエラー。00:00:00という状態だとidが表示できないため、getTime()でただの数字に修正。
+        //ただし、これでも海外にいる人だと何かエラーが起こる可能性がある。UUIDを使った方が本当はいい。
+        id: new Date().getTime(),
+        // id: todos.length + 1,//これだと、リストの１つを削除したときに順番がおかしくなる
         text: todo.trim()
       }
     ])
   }
 
-  setTodos("")
+  setTodos([])
 }
 
 const handleAddTodoList = e => {//handleAddTodoListはボタンをクリックされたらリストに対して値を渡す
@@ -72,7 +74,9 @@ const handleAddTodoList = e => {//handleAddTodoListはボタンをクリック�
   // console.log('This is handleAddTodoList')
 
   if( todo !== "" ){
-    const newTodos = [todo]
+    // console.log(todos)
+    console.log(todo.trim())
+    const newTodos = [...todos, { id: new Date().getTime(),text: todo.trim() }]
     setTodos(newTodos)
   }
 }
@@ -108,7 +112,7 @@ const handleEditTodoList = id => {
           <li key={todo.id}>
             <ul>
               <li>{todo.id}</li>
-              <li>{todos}</li>
+              <li>{todo.text}</li>
               <button
               type="button"
               onClick={handleEditTodoList}>
