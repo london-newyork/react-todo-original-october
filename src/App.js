@@ -1,8 +1,33 @@
 import React,{ useState, useEffect } from 'react'
 
+
+// const App = () => {
+//   const [todos,setTodos] = useState("")
+//   const [todo,setTodo] = useState("")
+
+//   const handleInput = (e) => {
+//     setTodo(e.target.value)
+//   }
+//   const handleAddTodolist = () =>{
+//     setTodos(todo)
+//     setTodo("")
+//   }
+ 
+//   return (
+//     <div>
+//       <p>Todo:{todos}</p>
+//       <input type="text" value={todo} onChange={handleInput} />
+//       <input type="button" value="入力"　onClick={handleAddTodolist}/>
+//     </div>
+//   )
+// }
+// export default App
+
 function App() {
   const [todos, setTodos] = useState([])
   const [todo, setTodo] = useState("")
+  // const [state, dispatch] = useReducer()
+
   // const waiting = "Waiting"
   // const working = "Working"
   // const completed = "Completed"
@@ -41,12 +66,20 @@ function handleFormSubmit (e) {
   setTodos("")
 }
 
-function handleAddTodoList () {
+const handleAddTodoList = e => {//handleAddTodoListはボタンをクリックされたらリストに対して値を渡す
+  e.preventDefault();
+  // console.log('This is handleAddTodoList')
+
   if( todo !== "" ){
     const newTodos = [todo]
-    setTodo(newTodos)
-    console.log(newTodos)
+    setTodos(newTodos)
   }
+}
+
+const handleEditTodoList = id => {
+  const newTodoList = [...todos]
+  newTodoList.splice(id,1)
+  setTodo(newTodoList)
 }
 
   return (
@@ -63,20 +96,21 @@ function handleAddTodoList () {
         
         <button
           type="button"
-          onClick={()=>handleAddTodoList(todo)}>
+          onClick={handleAddTodoList}>{/**クリックしてhandleAddTodolistへ渡す */}
           Add
         </button>
       </form>
       
       <h2>My Todo List</h2>
-      <ul className="todo-list">
-        {todos.map((todo) => (
-          <li key={todo.id}>
+      <ul>
+        {todos.map((todo,index) => (
+          <li key={index}>
             <ul>
-              <li>{setTodo(todo)}</li>
+              <li>{index}</li>
+              <li>{todos}</li>
               <button
               type="button"
-            >
+              onClick={handleEditTodoList}>
               Edit
             </button>
             <button
