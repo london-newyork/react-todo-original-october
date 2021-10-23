@@ -57,7 +57,8 @@ function handleFormSubmit (e) {
     setTodos([
       ...todos,
       {
-        id: todos.length + 1,
+        id: new Date(),
+        // id: todos.length + 1,
         text: todo.trim()
       }
     ])
@@ -103,10 +104,10 @@ const handleEditTodoList = id => {
       
       <h2>My Todo List</h2>
       <ul>
-        {todos.map((todo,index) => (
-          <li key={index}>
+        {todos.map((todo) => (
+          <li key={todo.id}>
             <ul>
-              <li>{index}</li>
+              <li>{todo.id}</li>
               <li>{todos}</li>
               <button
               type="button"
