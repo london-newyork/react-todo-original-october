@@ -26,6 +26,9 @@ import React,{ useState, useEffect } from 'react'
 function App() {
   const [todos, setTodos] = useState([])//配列がセットされているので、以降はずっと配列が来る
   const [todo, setTodo] = useState("")//文字列がセットされているので、以降はずっと文字列が来る
+  const [currentTodo, setCurrentTodo] = useState({})
+  // const [currentTodoText, setCurrentTodoText] = useState("")
+  const [disable, setDisable] = useState(true)
   // const [state, dispatch] = useReducer()
 
   // const waiting = "Waiting"
@@ -46,7 +49,7 @@ useEffect(() => {
   localStorage.setItem("todos", JSON.stringify(todos))
 },[todos])
 
-function handleInputChange(e) {
+function handleGetInputValue(e) {
   setTodo(e.target.value)
 }
 
@@ -74,17 +77,47 @@ const handleAddTodoList = e => {//handleAddTodoListはボタンをクリック�
   // console.log('This is handleAddTodoList')
 
   if( todo !== "" ){
-    // console.log(todos)
-    console.log(todo.trim())
-    const newTodos = [...todos, { id: new Date().getTime(),text: todo.trim() }]
+    const newTodos = [...todos, { id: new Date().getTime(), text: todo.trim() }]
     setTodos(newTodos)
   }
 }
 
-const handleEditTodoList = id => {
-  const newTodoList = [...todos]
-  newTodoList.splice(id,1)
-  setTodo(newTodoList)
+const handleEditInputChange = e => {
+  // setCurrentTodo({...currentTodo, text: e.target.value})
+  // console.log(currentTodo.text)
+
+  // setCurrentTodo("")//一度初期化すれば文字は空になるはず→ならない→全く消してしまうと逆に不便なので元の文字列残す。
+  
+  // setCurrentTodo({
+  //   ...todo,//元々入力されているtodoを展開
+  //   text: e.target.value//現在の入力値を取得する
+  // })
+
+  // setTodos(currentTodo.text)//setCurrentTodoで定義したcurrentTodoがtodosに入るはず => エラー todos.map is not a function.
+  // setCurrentTodo(todo.text) => エラー
+
+  const editTodo = () => {
+    let todoText = todo.text
+    todoText = ""//todo.text初期化
+  }
+  setTodo(editTodo(e.target.value))//初期化したeditTodoの中に新たに取得したテキストを入力したい
+  console.log(todo)
+}
+
+function handleDeleteTodo(id) {
+
+  const removeTodo = todos.filter((todo) => {//filterでtodosからtodoとして
+    return todo.id !==　id//todo.idと異なるidを切り出す　→ なぜ？
+  })
+  setTodos(removeTodo)//もう一度todosにセットし直す
+}
+
+function handleUpdateTodo(id, updatedTodo){
+const updatedItem = todos.map((todo)=> {
+  return todo.id === id ? updatedTodo : todo//idがtodo.idとマッチしている時は新しいTodoを返す
+})
+  setTodo(updatedItem)
+  console.log(updatedItem)
 }
 
   return (
@@ -96,7 +129,7 @@ const handleEditTodoList = id => {
           type="text"
           value={todo}
           placeholder="type your todo here"
-          onChange={handleInputChange}
+          onChange={handleGetInputValue}
         />
         
         <button
@@ -112,16 +145,41 @@ const handleEditTodoList = id => {
           <li key={todo.id}>
             <ul>
               <li>{todo.id}</li>
-              <li>{todo.text}</li>
+              <li>
+                <input
+                  name="todo"
+                  type="text"
+                  value={todo.text}
+                  onChange={handleEditInputChange}
+                  style={{border: 0}}
+                  disabled={disable}
+                />
+              </li>
+              <select>
+                <option>未着手</option>
+                <option>進行中</option>
+                <option>完了</option>
+              </select>
               <button
-              type="button"
-              onClick={handleEditTodoList}>
-              Edit
-            </button>
-            <button
-              type="button"
-            >
-              Delete
+                type="button"
+                onClick={() => setDisable(false)}
+              >
+                Edit
+              </button>
+              <button
+                type="button"
+                onClick={()=> handleUpdateTodo()}
+              >
+                Update
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDeleteTodo(todo.id)}
+              >
+                Delete
+              </button>
+              <button>
+                Detaile
               </button>
             </ul>
           </li>
