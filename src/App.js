@@ -97,7 +97,7 @@ const handleEditInputChange = e => {
   // setCurrentTodo(todo.text) => エラー
 
   const editTodo = () => {
-    let todoText = todo.text
+    const todoText = todo.text
     todoText = ""//todo.text初期化
   }
   setTodo(editTodo(e.target.value))//初期化したeditTodoの中に新たに取得したテキストを入力したい
