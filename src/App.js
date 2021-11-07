@@ -100,11 +100,11 @@ const handleEditInputChange = (e,id) => {
   //今書いているtodoをtodosから見つける
   const getEditedTodo = todos.filter((todo) => {
     //ただのidは今編集しているtodoのid, todo.idはfilterで回しているtodoの配列のid returnで　trueが返る。（filter関数なのでtrueがかえる）
-    return todo.id == id 
+    return todo.id === id
   })
 
   //配列が返るがtodoが欲しい。ただし1つのリストしか返ってこない
-  console.log(getEditedTodo[0])
+  console.log(getEditedTodo[0])//** 0指定。初期化？
   const todo = getEditedTodo[0]
 
   //見つかったtodoのテキストを変える
@@ -115,7 +115,7 @@ const handleEditInputChange = (e,id) => {
   const copyTodos = [...todos]
 
   //indexが取得できる
-  const Index = copyTodos.findIndex(todo => todo.id == id)
+  const Index = copyTodos.findIndex(todo => todo.id === id)
   copyTodos[Index] = todo
   console.log(Index)
 
@@ -139,12 +139,8 @@ function handleDeleteTodo(id) {
   setTodos(removeTodo)//もう一度todosにセットし直す
 }
 
-function handleUpdateTodo(id, updatedTodo){
-const updatedItem = todos.map((todo)=> {
-  return todo.id === id ? updatedTodo : todo//idがtodo.idとマッチしている時は新しいTodoを返す
-})
-  setTodo(updatedItem)
-  console.log(updatedItem)
+function handleEditDetaile(){
+
 }
 
   return (
@@ -195,17 +191,14 @@ const updatedItem = todos.map((todo)=> {
               </button>
               <button
                 type="button"
-                onClick={()=> handleUpdateTodo()}
-              >
-                Update
-              </button>
-              <button
-                type="button"
                 onClick={() => handleDeleteTodo(todo.id)}
               >
                 Delete
               </button>
-              <button>
+              <button
+                type="button"
+                onChange={()=>handleEditDetaile()}
+              >
                 Detaile
               </button>
             </ul>
@@ -214,14 +207,30 @@ const updatedItem = todos.map((todo)=> {
       </ul>
 
       <h2>Detaile</h2>
-      <div>
-        id
-        TodoTitle   
-        <button>Edit</button>
-        <p>
-          texttexttexttexttext
-        </p>
-      </div>
+      <ul>
+      {todos.map((todo) => (
+        <li key={todo.id}>
+          <ul>
+            <li>id:{todo.id}</li>
+            <li>TodoTitle:{todo.text}</li>
+            <li>
+              <button
+                type="button"
+                onClick={()=>setDisable(false)}
+              >Edit
+            </button>
+            </li>
+            <li>
+              <textarea
+                disabled={disable}
+              >
+              texttexttexttexttext
+              </textarea>
+            </li>
+          </ul>
+        </li>
+      ))}
+      </ul>
     </>
   )
 }
