@@ -102,7 +102,7 @@ const handleEditInputChange = (e,id) => {
     //ただのidは今編集しているtodoのid, todo.idはfilterで回しているtodoの配列のid returnで　trueが返る。（filter関数なのでtrueがかえる）
     return todo.id == id 
   })
-  
+
   //配列が返るがtodoが欲しい。ただし1つのリストしか返ってこない
   console.log(getEditedTodo[0])
   const todo = getEditedTodo[0]
@@ -119,7 +119,7 @@ const handleEditInputChange = (e,id) => {
   copyTodos[Index] = todo
   console.log(Index)
 
-  //編集したいtodo(reactだと期待したように編集前のtodoが出ないが)
+  //編集したいtodo(reactだと期待したように編集前のtodoがコンソールに出ないが)
   console.log(copyTodos[Index])
 
   //編集ずみのtodo
