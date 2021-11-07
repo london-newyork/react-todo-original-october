@@ -82,7 +82,7 @@ const handleAddTodoList = e => {//handleAddTodoListはボタンをクリック�
   }
 }
 
-const handleEditInputChange = e => {
+const handleEditInputChange = (e,id) => {
   // setCurrentTodo({...currentTodo, text: e.target.value})
   // console.log(currentTodo.text)
 
@@ -95,13 +95,40 @@ const handleEditInputChange = e => {
 
   // setTodos(currentTodo.text)//setCurrentTodoで定義したcurrentTodoがtodosに入るはず => エラー todos.map is not a function.
   // setCurrentTodo(todo.text) => エラー
+  console.log(e.target.value)
+  //todosを取得する
+  //今書いているtodoをtodosから見つける
+  const getEditedTodo = todos.filter((todo) => {
+    //ただのidは今編集しているtodoのid, todo.idはfilterで回しているtodoの配列のid returnで　trueが返る。（filter関数なのでtrueがかえる）
+    return todo.id == id 
+  })
+  
+  //配列が返るがtodoが欲しい。ただし1つのリストしか返ってこない
+  console.log(getEditedTodo[0])
+  const todo = getEditedTodo[0]
 
-  const editTodo = () => {
-    const todoText = todo.text
-    todoText = ""//todo.text初期化
-  }
-  setTodo(editTodo(e.target.value))//初期化したeditTodoの中に新たに取得したテキストを入力したい
+  //見つかったtodoのテキストを変える
+  //todoの更新ができる
+  todo.text = e.target.value
+
+  //todosリスト全体の取得のためにtodosの中身をコピーしてくる
+  const copyTodos = [...todos]
+
+  //indexが取得できる
+  const Index = copyTodos.findIndex(todo => todo.id == id)
+  copyTodos[Index] = todo
+  console.log(Index)
+
+  //編集したいtodo(reactだと期待したように編集前のtodoが出ないが)
+  console.log(copyTodos[Index])
+
+  //編集ずみのtodo
   console.log(todo)
+
+  //todosをsetTodosへ戻す
+  setTodos(
+    copyTodos
+    )
 }
 
 function handleDeleteTodo(id) {
@@ -150,7 +177,7 @@ const updatedItem = todos.map((todo)=> {
                   name="todo"
                   type="text"
                   value={todo.text}
-                  onChange={handleEditInputChange}
+                  onChange={(e)=>handleEditInputChange(e,todo.id)}//event以外も取得する場合は(e)=>関数(e,__)という書き方をする
                   style={{border: 0}}
                   disabled={disable}
                 />
