@@ -134,13 +134,16 @@ const handleEditInputChange = (e,id) => {
 function handleDeleteTodo(id) {
 
   const removeTodo = todos.filter((todo) => {//filterでtodosからtodoとして
-    return todo.id !==　id//todo.idと異なるidを切り出す　→ なぜ？
+    return todo.id !==　id//配列で回しているidと、今削除しようとしているidと「異なるid」を返す
   })
   setTodos(removeTodo)//もう一度todosにセットし直す
 }
 
-function handleEditDetaile(){
-
+function handleEditDetails(id){
+  const detailsTodo = todos.filter((todo) => {//filterでtodosからtodoとして
+    return todo.id ===　id//配列で回しているidと、今detailsを編集しようとしているidと「同じid」を返す
+  })
+  setTodos(detailsTodo)//もう一度todosにセットし直す
 }
 
   return (
@@ -197,16 +200,16 @@ function handleEditDetaile(){
               </button>
               <button
                 type="button"
-                onChange={()=>handleEditDetaile()}
+                onClick={()=>handleEditDetails(todo.id)}
               >
-                Detaile
+                Details
               </button>
             </ul>
           </li>
         ))}
       </ul>
 
-      <h2>Detaile</h2>
+      <h2>Details</h2>
       <ul>
       {todos.map((todo) => (
         <li key={todo.id}>
@@ -224,7 +227,6 @@ function handleEditDetaile(){
               <textarea
                 disabled={disable}
               >
-              texttexttexttexttext
               </textarea>
             </li>
           </ul>
